@@ -20,4 +20,14 @@ public class ResponseMapper {
         }
     }
 
+    public Map<String, Integer> mapBrands(String json) throws JsonProcessingException {
+        List<Map<String, String >> brandsList = objectMapper.readValue(json, new TypeReference<List<Map<String, String>>>() {});
+
+        Map<String, Integer> brandsMap = brandsList.stream()
+                .collect(Collectors.toMap(
+                        map -> map.get("name"),
+                        map -> Integer.parseInt(map.get("code"))));
+
+        return brandsMap;
+    }
 }

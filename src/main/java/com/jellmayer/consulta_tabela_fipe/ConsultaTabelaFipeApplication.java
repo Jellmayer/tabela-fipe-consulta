@@ -15,5 +15,7 @@ public class ConsultaTabelaFipeApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		System.out.println("Sistema de consultas à tabela FIPE inicializado.");
 
+		Console console = new Console();
+		console.showMenu();
 	}
 }
