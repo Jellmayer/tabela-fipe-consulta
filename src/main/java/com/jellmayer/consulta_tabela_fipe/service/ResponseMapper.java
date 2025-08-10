@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -14,20 +13,18 @@ public class ResponseMapper {
 
     public <T> T parseJson(String json, Class<T> targetClass) {
         try {
-            return objectMapper.convertValue(json, targetClass);
+            return objectMapper.readValue(json, targetClass);
         } catch (Exception e) {
             throw new RuntimeException("Failed to parse JSON", e);
         }
     }
 
-    public Map<String, Integer> mapBrands(String json) throws JsonProcessingException {
-        List<Map<String, String >> brandsList = objectMapper.readValue(json, new TypeReference<List<Map<String, String>>>() {});
+    public Map<String, String> mapData(String json) throws JsonProcessingException {
+        List<Map<String, String >> dataList = objectMapper.readValue(json, new TypeReference<List<Map<String, String>>>() {});
 
-        Map<String, Integer> brandsMap = brandsList.stream()
+        return dataList.stream()
                 .collect(Collectors.toMap(
-                        map -> map.get("name"),
-                        map -> Integer.parseInt(map.get("code"))));
-
-        return brandsMap;
+                        map -> map.get("code"),
+                        map -> map.get("name")));
     }
 }
